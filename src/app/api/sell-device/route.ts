@@ -11,8 +11,8 @@ export const config = {
   },
 };
 
-export async function POST(req: NextRequest) {
-  return new Promise((resolve) => {
+export async function POST(req: NextRequest): Promise<Response> {
+  return new Promise<Response>((resolve) => {
     const form = new formidable.IncomingForm();
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,8 +39,8 @@ export async function POST(req: NextRequest) {
         }
 
         const msg: MailDataRequired = {
-          to: 'recipient@example.com', // replace with actual recipient email
-          from: 'your-email@example.com', // replace with your verified sender email
+          to: 'williamtjose@outlook.com', // replace with actual recipient email
+          from: 'josewirri@hotmail.com', // replace with your verified sender email
           subject: 'New Device Sell Request',
           html: `
             <h2>New Device Sell Request</h2>

@@ -8,6 +8,7 @@ import circuitboard from "../components/assets/circuitboard.jpg"
 
 
 interface CartItem {
+  mainImage: string;
   id: number;
   name: string;
   condition: string;
@@ -45,7 +46,7 @@ const RefurbishedElectronics = () => {
     description: ''
   });
 
-  const [featuredProducts, setFeaturedProducts] = useState<any[]>([]);
+  const [featuredProducts, setFeaturedProducts] = useState<CartItem[]>([]);
 
   useEffect(() => {
     const fetchFeaturedProducts = async () => {
@@ -61,7 +62,10 @@ const RefurbishedElectronics = () => {
     fetchFeaturedProducts();
   }, []);
 
-  const addToCart = (product: { id: number; name: string; condition: string; originalPrice: number; refurbishedPrice: number; sustainabilityImpact: string; }) => {
+
+  const addToCart = (product: {
+      mainImage: string; id: number; name: string; condition: string; originalPrice: number; refurbishedPrice: number; sustainabilityImpact: string; 
+}) => {
     const existingItem = cart.find(item => item.id === product.id);
     if (existingItem) {
       setCart(cart.map(item => 
@@ -70,7 +74,7 @@ const RefurbishedElectronics = () => {
           : item
       ));
     } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
+      setCart([...cart, { ...product, quantity: 1, mainImage: product.mainImage }]);
     }
   };
 

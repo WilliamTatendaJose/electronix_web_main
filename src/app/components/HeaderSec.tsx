@@ -10,7 +10,7 @@ const HeaderSec=()=>{
          <header className="fixed w-full top-0 z-50 bg-transparent">
                 <nav className="max-w-screen-xl mx-auto px-4">
                     <div className="flex justify-between items-center h-20">
-                        <div className="text-2xl text-white font-bold">TECHREHUB</div>
+                        <Link href="/" className="text-2xl text-white font-bold">TECHREHUB</Link>
 
                         {/* Desktop Navigation */}
                         <div className="text-white hidden md:flex space-x-8">

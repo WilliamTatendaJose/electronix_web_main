@@ -1,18 +1,14 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import client from  "../../shop/client";
+import { NextResponse } from 'next/server';
+import client from '../../shop/client';
 
-
-
-const getFeaturedProducts = async (req: NextApiRequest, res: NextApiResponse) => {
+export async function GET() {
   try {
     const query = '*[_type == "product" && featured == true] { id, name, condition, originalPrice, refurbishedPrice, sustainabilityImpact, "image": image.asset->url }';
     const featuredProducts = await client.fetch(query);
 
-    res.status(200).json(featuredProducts);
+    return NextResponse.json(featuredProducts, { status: 200 });
   } catch (error) {
     console.error('Error fetching featured products:', error);
-    res.status(500).json({ message: 'Error fetching featured products' });
+    return NextResponse.json({ message: 'Error fetching featured products' }, { status: 500 });
   }
-};
-
-export default getFeaturedProducts; 
+}

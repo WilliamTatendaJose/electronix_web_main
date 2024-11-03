@@ -5,6 +5,8 @@ import React, { useState, useEffect } from 'react';
 import { ShoppingCart, X, Plus, Minus, AlertCircle } from 'lucide-react';
 import Image from 'next/image';
 import circuitboard from "../components/assets/circuitboard.jpg"
+
+
 interface CartItem {
   id: number;
   name: string;
@@ -17,6 +19,7 @@ interface CartItem {
 
 const RefurbishedElectronics = () => {
   const [success, setSuccess] = useState(false);
+  const [successSell, setSuccessSell] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [showSellForm, setShowSellForm] = useState<boolean>(false);
@@ -118,7 +121,7 @@ const RefurbishedElectronics = () => {
 
       if (response.ok) {
         // Clear cart and show success message
-         setSuccess(true);
+        setSuccessSell(true);
         setError(null);
         setCart([]);
         setShowCheckout(false);
@@ -462,7 +465,7 @@ const RefurbishedElectronics = () => {
                     {loading ? 'Placing Order...' : ' Place Order'}
                   
                 </button>
-                {success && (
+                {successSell && (
             <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-6">
               Order Placed Successfully!
             </div>
@@ -584,6 +587,16 @@ const RefurbishedElectronics = () => {
                  {loading ? 'Placing Sell Request...' : ' Sell Device'}
                   
                 </button>
+                 <button 
+                  type="button"
+                  onClick={() => setShowSellForm(false)}
+                  className="flex-1 border border-white py-3 rounded-lg hover:bg-gray-400 transition duration-300"
+                >
+                  Cancel
+                </button>
+              
+               
+              </div>
                 {success && (
             <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-6">
               Request Sent Successfully
@@ -594,14 +607,6 @@ const RefurbishedElectronics = () => {
               An error occured please try again later
             </div>
           )}
-                <button 
-                  type="button"
-                  onClick={() => setShowSellForm(false)}
-                  className="flex-1 border border-white py-3 rounded-lg hover:bg-gray-400 transition duration-300"
-                >
-                  Cancel
-                </button>
-              </div>
             </form>
           </div>
         </div>

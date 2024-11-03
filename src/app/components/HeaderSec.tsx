@@ -17,6 +17,7 @@ const HeaderSec=()=>{
                             <a href="#services" className="hover:text-gray-600">Corporate</a>
                             <a href="#about" className="hover:text-gray-600">About Us</a>
                             <a href="#contact-form" className="hover:text-gray-600">Contact</a>
+                            <a href="/shop" className="hover:text-gray-600">Shop here</a>
                         </div>
 
                         {/* Mobile Menu Button */}
@@ -43,6 +44,9 @@ const HeaderSec=()=>{
                 </a>
                 <a className="text-2xl font-medium hover:text-gray-300" href="#contact-form" onClick={() => setIsMenuOpen(false)}>
                   Contact Us
+                 </a>
+                 <a className="text-2xl font-medium hover:text-gray-300" href="/shop" onClick={() => setIsMenuOpen(false)}>
+                 Shop here
                  </a>
                  </div>
                 )}

@@ -260,7 +260,7 @@ const RefurbishedElectronics = () => {
               <div key={product.id} className="bg-gray-900 p-6 rounded-lg">
                 <div className="aspect-w-16 aspect-h-9 mb-4">
                   <Image
-                    src={product.image}
+                    src={product.mainImage}
                     alt={product.name}
                     className="rounded-lg object-cover"
                     width={400}

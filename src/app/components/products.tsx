@@ -122,7 +122,6 @@ const RefurbishedElectronics = () => {
         setError(null);
         setCart([]);
         setShowCheckout(false);
-        alert('Order placed successfully! Check your email for confirmation.');
       } else {
         
         const errorMessage = await response.text();
@@ -167,19 +166,28 @@ const RefurbishedElectronics = () => {
         body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to send data');
+      if (response.ok) {
+        // Clear cart and show success message
+         setSuccess(true);
+        setError(null);
+        setCart([]);
+       
+      } else {
+        
+        const errorMessage = await response.text();
+        setError(errorMessage);
       }
-
-      alert('Form submitted successfully!');
-      setShowSellForm(false);
-    } else {
-      throw new Error('Image is required');
     }
-  } catch (error) {
-    console.error('Error during form submission:', error);
-    alert('An error occurred. Please try again.');
-  }
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
+    }
+    finally {
+      setLoading(false);
+    }
 };
 
   return (
@@ -280,7 +288,7 @@ const RefurbishedElectronics = () => {
 
       {/* Cart Sidebar */}
       {showCart && (
-        <div className="fixed inset-0 bg-black bg-opacity-5 z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-5 z-50 overflow-y-auto">
           <div className="absolute right-0 top-0 h-full w-full max-w-md bg-gray-900 p-6 overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl text-gray-200 font-bold">Your Cart</h2>
@@ -353,7 +361,7 @@ const RefurbishedElectronics = () => {
 
       {/* Checkout Modal */}
       {showCheckout && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-gray-900 rounded-lg max-w-2xl w-full p-8 max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold">Checkout</h2>
@@ -473,7 +481,7 @@ const RefurbishedElectronics = () => {
       
       {/* Sell Form Modal */}
       {showSellForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-gray-900 rounded-lg max-w-2xl w-full p-8">
             <h2 className="text-3xl font-bold mb-6">Sell Your Device</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -573,8 +581,19 @@ const RefurbishedElectronics = () => {
                   type="submit"
                   className="flex-1 bg-white  text-black py-3 rounded-lg hover:bg-gray-400 transition duration-300"
                 >
-                  Submit
+                 {loading ? 'Placing Sell Request...' : ' Sell Device'}
+                  
                 </button>
+                {success && (
+            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-6">
+              Request Sent Successfully
+            </div>
+          )}
+          {error && (
+            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mt-6">
+              An error occured please try again later
+            </div>
+          )}
                 <button 
                   type="button"
                   onClick={() => setShowSellForm(false)}

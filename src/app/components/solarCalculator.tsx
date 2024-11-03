@@ -6,6 +6,7 @@ import { Sun, DollarSign, Settings, Battery, Power} from 'lucide-react';
 const commonLoads = [
   { name: 'Air Conditioner (1.5 ton)', kwhPerMonth: 360 },
   { name: 'Refrigerator', kwhPerMonth: 150 },
+   { name: 'Borehole Pump(1Hp)', kwhPerMonth: 250 },
   { name: 'LED TV (55")', kwhPerMonth: 30 },
   { name: 'Washing Machine', kwhPerMonth: 25 },
   { name: 'Desktop Computer', kwhPerMonth: 45 },

@@ -18,8 +18,9 @@ const HeaderSec=()=>{
                             <Link href="/#services" className="hover:text-gray-600">Corporate</Link>
                             <Link href="/#about" className="hover:text-gray-600">About Us</Link>
                             <Link href="/#contact-form" className="hover:text-gray-600">Contact</Link>
-                            <Link href="/shop" className="hover:text-gray-600">Shop here</Link>
                             <Link href="/solar" className="hover:text-gray-600">Solar</Link>
+                            <Link href="/shop" className="hover:text-gray-600">Shop here</Link>
+                            
                         </div>
 
                         {/* Mobile Menu Button */}
@@ -35,21 +36,24 @@ const HeaderSec=()=>{
                 {/* Mobile Menu */}
                 {isMenuOpen && (
                    <div className="fixed inset-0 z-40 text-white bg-black bg-opacity-70 flex flex-col items-center justify-center space-y-8">
-                    <a className="text-2xl font-medium hover:text-gray-300" href="#" onClick={() => setIsMenuOpen(false)}>
+                    <link className="text-2xl font-medium hover:text-gray-300" href="/#" onClick={() => setIsMenuOpen(false)}>
                     Home
-                 </a>
-                 <a className="text-2xl font-medium hover:text-gray-300" href="#services" onClick={() => setIsMenuOpen(false)}>
+                 </link>
+                 <link className="text-2xl font-medium hover:text-gray-300" href="/#services" onClick={() => setIsMenuOpen(false)}>
                     Services
-                 </a>
-                <a className="text-2xl font-medium hover:text-gray-300" href="#about" onClick={() => setIsMenuOpen(false)}>
+                 </link>
+                <link className="text-2xl font-medium hover:text-gray-300" href="#about" onClick={() => setIsMenuOpen(false)}>
                  About
-                </a>
-                <a className="text-2xl font-medium hover:text-gray-300" href="#contact-form" onClick={() => setIsMenuOpen(false)}>
+                </link>
+                <link className="text-2xl font-medium hover:text-gray-300" href="/#contact-form" onClick={() => setIsMenuOpen(false)}>
                   Contact Us
-                 </a>
-                 <a className="text-2xl font-medium hover:text-gray-300" href="/shop" onClick={() => setIsMenuOpen(false)}>
+                 </link>
+                 <link className="text-2xl font-medium hover:text-gray-300" href="/solar" onClick={() => setIsMenuOpen(false)}>
+                 Solar
+                 </link>
+                 <link className="text-2xl font-medium hover:text-gray-300" href="/shop" onClick={() => setIsMenuOpen(false)}>
                  Shop here
-                 </a>
+                 </link>
                  </div>
                 )}
             </header>

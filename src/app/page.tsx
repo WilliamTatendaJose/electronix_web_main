@@ -6,7 +6,6 @@ import ServiceSec from './components/ServicesSec';
 import CallToAction from './components/CallToAction';
 import WhyChooseUS from './components/WhyChooseUs';
 import ContactForm from './components/ContactForm';
-import HeaderSec from './components/HeaderSec';
 import Head from 'next/head';
 
 export default function Home() {
@@ -29,7 +28,7 @@ export default function Home() {
             
            
         <main className="flex-1">
-           <HeaderSec/>
+           
           
            <HomeSec/>
            <AboutUs/>

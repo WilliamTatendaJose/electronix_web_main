@@ -1,6 +1,7 @@
 "use client"
 import  { useState } from 'react';
 import { Menu,X } from 'lucide-react';
+import Link from 'next/link';
 
 const HeaderSec=()=>{
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,11 +14,12 @@ const HeaderSec=()=>{
 
                         {/* Desktop Navigation */}
                         <div className="text-white hidden md:flex space-x-8">
-                            <a href="#services" className="hover:text-gray-600">Services</a>
-                            <a href="#services" className="hover:text-gray-600">Corporate</a>
-                            <a href="#about" className="hover:text-gray-600">About Us</a>
-                            <a href="#contact-form" className="hover:text-gray-600">Contact</a>
-                            <a href="/shop" className="hover:text-gray-600">Shop here</a>
+                            <Link href="/#services" className="hover:text-gray-600">Services</Link>
+                            <Link href="/#services" className="hover:text-gray-600">Corporate</Link>
+                            <Link href="/#about" className="hover:text-gray-600">About Us</Link>
+                            <Link href="/#contact-form" className="hover:text-gray-600">Contact</Link>
+                            <Link href="/shop" className="hover:text-gray-600">Shop here</Link>
+                            <Link href="/solar" className="hover:text-gray-600">Solar</Link>
                         </div>
 
                         {/* Mobile Menu Button */}

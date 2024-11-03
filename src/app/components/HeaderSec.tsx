@@ -39,15 +39,7 @@ const HeaderSec=()=>{
                     <a className="text-2xl font-medium hover:text-gray-300" href="#" onClick={() => setIsMenuOpen(false)}>
                     Home
                  </a>
-                 <a className="text-2xl font-medium hover:text-gray-300" href="#services" onClick={() => setIsMenuOpen(false)}>
-                    Services
-                 </a>
-                <a className="text-2xl font-medium hover:text-gray-300" href="#about" onClick={() => setIsMenuOpen(false)}>
-                 About
-                </a>
-                <a className="text-2xl font-medium hover:text-gray-300" href="#contact-form" onClick={() => setIsMenuOpen(false)}>
-                  Contact Us
-                 </a>
+                
                  <a className="text-2xl font-medium hover:text-gray-300" href="/solar" onClick={() => setIsMenuOpen(false)}>
                  Solar
                  </a>

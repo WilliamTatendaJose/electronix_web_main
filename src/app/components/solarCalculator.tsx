@@ -17,9 +17,9 @@ const commonLoads = [
 type PricingTier = 'low' | 'medium' | 'high';
 
 const pricingTiers = {
-  low: { costPerWatt: 1.0, label: 'Budget', description: 'Basic components, standard warranty' },
-  medium: { costPerWatt: 1.5, label: 'Premium', description: 'Mid-range components, extended warranty' },
-  high: { costPerWatt: 2.0, label: 'Elite', description: 'Top-tier components, comprehensive warranty' }
+  low: { costPerWatt: 0.6, label: 'Budget', description: 'Basic components, standard warranty' },
+  medium: { costPerWatt: 0.8, label: 'Premium', description: 'Mid-range components, extended warranty' },
+  high: { costPerWatt: 1.2, label: 'Elite', description: 'Top-tier components, comprehensive warranty' }
 };
 
 // Function to get standard system size
@@ -91,11 +91,11 @@ const SolarCalculator = () => {
     const batteryVoltage = getBatteryVoltage(systemSize);
     const dailyUsage = (calculationType === 'manual' ? Number(monthlyUsage) : calculateLoadTotal()) / 30;
     const daysOfAutonomy = 2; // 2 days of backup
-    const depthOfDischarge = 0.5; // Using 50% of battery capacity
+    const depthOfDischarge = 0.9; // Using 50% of battery capacity
     
     // Calculate battery capacity in Ah
     const batteryCapacity = systemType === 'offgrid'
-      ? (dailyUsage * 1000 * daysOfAutonomy) / (batteryVoltage * depthOfDischarge):((dailyUsage * 500 * daysOfAutonomy) / (batteryVoltage * depthOfDischarge));
+      ? (dailyUsage * 800 * daysOfAutonomy) / (batteryVoltage * depthOfDischarge):((dailyUsage * 200 * daysOfAutonomy) / (batteryVoltage * depthOfDischarge));
 
     
 
@@ -175,7 +175,7 @@ const SolarCalculator = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
+    <div className="bg-black max-w-7xl mx-auto p-6">
        <div className="mb-8  text-center">
         <h2 className="text-2xl mt-10 font-bold mb-3">Why Choose Solar Energy?</h2>
         <p className="text-gray-200 max-w-3xl mx-auto">
@@ -203,7 +203,7 @@ const SolarCalculator = () => {
           <div className="flex gap-4 mb-6">
             <button
               className={`flex-1 p-3 rounded-lg flex items-center justify-center gap-2 ${
-                systemType === 'grid' ? 'bg-green-500 text-white' : 'bg-gray-500'
+                systemType === 'grid' ? 'bg-green-500 text-white' : 'bg-gray-300'
               }`}
               onClick={() => setSystemType('grid')}
             >
@@ -212,7 +212,7 @@ const SolarCalculator = () => {
             </button>
             <button
               className={`flex-1 p-3 rounded-lg flex items-center justify-center gap-2 ${
-                systemType === 'offgrid' ? 'bg-green-500 text-white' : 'bg-gray-500'
+                systemType === 'offgrid' ? 'bg-green-500 text-white' : 'bg-gray-300'
               }`}
               onClick={() => setSystemType('offgrid')}
             >
@@ -225,7 +225,7 @@ const SolarCalculator = () => {
           <div className="flex gap-4 mb-6">
             <button
               className={`flex-1 p-3 rounded-lg flex items-center justify-center gap-2 ${
-                calculationType === 'manual' ? 'bg-green-500 text-white' : 'bg-gray-500'
+                calculationType === 'manual' ? 'bg-green-500 text-white' : 'bg-gray-300'
               }`}
               onClick={() => setCalculationType('manual')}
             >
@@ -234,7 +234,7 @@ const SolarCalculator = () => {
             </button>
             <button
               className={`flex-1 p-3 rounded-lg flex items-center justify-center gap-2 ${
-                calculationType === 'loads' ? 'bg-green-500 text-white' : 'bg-gray-500'
+                calculationType === 'loads' ? 'bg-green-500 text-white' : 'bg-gray-300'
               }`}
               onClick={() => setCalculationType('loads')}
             >
@@ -245,7 +245,7 @@ const SolarCalculator = () => {
 
           {calculationType === 'manual' && (
             <div className="mb-6">
-              <label className="block mb-2 text-lg">Monthly Electricity Usage (kWh)</label>
+              <label className="block mb-2 text-lg text-gray-200">Monthly Electricity Usage (kWh)</label>
               <input
                 type="number"
                 value={monthlyUsage}
@@ -262,7 +262,7 @@ const SolarCalculator = () => {
                 <div key={load.name} className="p-3 border rounded-lg">
                   <div className="flex justify-between items-center mb-2">
                     <span>{load.name}</span>
-                    <span className="text-sm text-gray-500">{load.kwhPerMonth} kWh/month</span>
+                    <span className="text-sm text-gray-300">{load.kwhPerMonth} kWh/month</span>
                   </div>
                   <input
                     type="number"
@@ -290,7 +290,7 @@ const SolarCalculator = () => {
                     key={tier}
                     onClick={() => setSelectedTier(tier as PricingTier)}
                     className={`p-3 rounded-lg text-center ${
-                      selectedTier === tier ? 'bg-green-500 text-white' : 'bg-gray-500'
+                      selectedTier === tier ? 'bg-green-500 text-white' : 'bg-gray-300'
                     }`}
                   >
                     <div className="font-bold">{label}</div>
@@ -336,7 +336,7 @@ const SolarCalculator = () => {
           {systemDetails && !showQuoteForm ? (
             <button
               onClick={() => setShowQuoteForm(true)}
-              className="w-full p-4 bg-white text-black rounded-lg hover:bg-gray-500 transition-colors"
+              className="w-full p-4 bg-white text-black rounded-lg hover:bg-gray-300 transition-colors"
             >
               Get a Quote
             </button>
@@ -377,7 +377,7 @@ const SolarCalculator = () => {
               </div>
               <button
                 type="submit"
-                className="w-full p-4 bg-white text-black rounded-lg hover:bg-gray-500 transition-colors"
+                className="w-full p-4 bg-white text-black rounded-lg hover:bg-gray-300 transition-colors"
                 disabled={loading}
               >
                 {loading ? 'Sending...' : ' Submit Quote Request'}

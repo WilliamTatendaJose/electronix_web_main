@@ -205,7 +205,9 @@ const RefurbishedElectronics = () => {
           onClick={() => setShowCart(true)}
           className="bg-black text-white p-3 rounded-full relative hover:bg-gray-800 transition duration-300"
         >
-          <ShoppingCart size={32} />
+          <ShoppingCart size={32
+            
+          } />
           {cart.length > 0 && (
             <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm">
               {cart.reduce((total, item) => total + item.quantity, 0)}

@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { Check} from 'lucide-react'
-import solar from "../components/assets/solar.jpg"
+import solar from "../components/assets/solarpackages.jpeg"
 import { useState } from 'react'
 
 

@@ -282,7 +282,7 @@ export default function Component() {
                 <Label htmlFor="address" className="text-right">
                   Address
                 </Label>
-                <Input id="address" name="address" type="tel" className="col-span-3" required />
+                <Input id="address" name="address" type="address" className="col-span-3" required />
               </div>
             </div>
             <DialogFooter>

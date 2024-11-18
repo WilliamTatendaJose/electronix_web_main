@@ -17,8 +17,8 @@ const commonLoads = [
 type PricingTier = 'low' | 'medium' | 'high';
 
 const pricingTiers = {
-  low: { costPerWatt: 0.6, label: 'Budget', description: 'Basic components, standard warranty' },
-  medium: { costPerWatt: 0.8, label: 'Premium', description: 'Mid-range components, extended warranty' },
+  low: { costPerWatt: 0.7, label: 'Budget', description: 'Basic components, standard warranty' },
+  medium: { costPerWatt: 0.9, label: 'Premium', description: 'Mid-range components, extended warranty' },
   high: { costPerWatt: 1.2, label: 'Elite', description: 'Top-tier components, comprehensive warranty' }
 };
 

@@ -3,15 +3,15 @@ import sgMail from '@sendgrid/mail'
 
 // Initialize SendGrid with your API key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY as string)
-// const sender= process.env.SENDER_EMAIL 
-// const reciever= process.env.RECIEVER_EMAIL 
+const sender= process.env.SENDER_EMAIL 
+const reciever= process.env.RECIEVER_EMAIL 
 export async function POST(request: Request) {
   const data = await request.json()
   const { userDetails, systemDetails} = data
 
   const msg = {
-    to: 'support@techrehub.co.zw',
-    from: 'wjose@techrehub.co.zw',
+    to: reciever,
+    from: sender!,
     subject: `New Solar Quote from: ${userDetails.name}`,
     text: `Name: ${userDetails.name }\nEmail: ${userDetails.email}\nPhone: ${userDetails.phone}\nSystem Size: ${systemDetails.systemSize}\nBattery Capacity: ${systemDetails.batteryCapacity}\nBattery Voltage: ${systemDetails.batteryVoltage}\nCost: ${systemDetails.cost}\nSystem Type: ${systemDetails.systemType}\nPricing Tier: ${systemDetails.selectedTier}`,
     html: `

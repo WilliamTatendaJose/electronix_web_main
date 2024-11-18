@@ -43,7 +43,7 @@ const HeaderSec=()=>{
                  <a className="text-2xl font-medium hover:text-gray-300" href="/solar" onClick={() => setIsMenuOpen(false)}>
                  Solar
                  </a>
-                 <a className="text-2xl font-medium hover:text-gray-300" href="/shop here" onClick={() => setIsMenuOpen(false)}>
+                 <a className="text-2xl font-medium hover:text-gray-300" href="/shop" onClick={() => setIsMenuOpen(false)}>
                  Shop here
                  </a>
                  </div>

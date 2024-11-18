@@ -44,7 +44,7 @@ const HeaderSec=()=>{
                  Solar
                  </a>
                  <a className="text-2xl font-medium hover:text-gray-300" href="/shop" onClick={() => setIsMenuOpen(false)}>
-                 Shop here
+                 Shop Here
                  </a>
                  </div>
                 )}

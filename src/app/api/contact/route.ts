@@ -3,14 +3,16 @@ import sgMail from '@sendgrid/mail'
 
 // Initialize SendGrid with your API key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY as string)
+const sender= process.env.SENDER_EMAIL 
+const reciever= process.env.RECIEVER_EMAIL 
 
 export async function POST(request: Request) {
   const data = await request.json()
   const { name, email, subject, message } = data
 
   const msg = {
-    to: 'williamtjose@outlook.com', // Change this to your recipient
-    from: 'josewirri@hotmail.com', // Change this to your verified sender
+    to: reciever!, // Change this to your recipient
+    from: sender!, // Change this to your verified sender
     subject: `New Contact Form Submission: ${subject}`,
     text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
     html: `

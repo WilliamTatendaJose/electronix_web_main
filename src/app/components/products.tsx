@@ -105,6 +105,9 @@ const RefurbishedElectronics = () => {
 
   const handleCheckout = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccessSell(false);
     // Prepare order data
     const orderData = {
       items: cart,
@@ -148,6 +151,9 @@ const RefurbishedElectronics = () => {
 
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
   e.preventDefault();
+  console.log("button clicked");
+  setLoading(true);
+  setError(null);
 
   try {
     // Collect form data
@@ -203,7 +209,7 @@ const RefurbishedElectronics = () => {
       <header className="fixed top-0 right-0 z-50 p-4">
         <button 
           onClick={() => setShowCart(true)}
-          className="bg-black text-white p-3 rounded-full relative hover:bg-gray-800 transition duration-300"
+          className="bg-black text-white rounded-full relative hover:bg-gray-800 transition duration-300"
         >
           <ShoppingCart size={32
             
@@ -357,6 +363,8 @@ const RefurbishedElectronics = () => {
                     onClick={() => {
                       setShowCart(false);
                       setShowCheckout(true);
+                      setSuccessSell(false);
+                      setError(null);
                     }}
                     className="w-full bg-white text-black py-3 rounded-lg hover:bg-gray-400 transition duration-300"
                   >
@@ -596,7 +604,10 @@ const RefurbishedElectronics = () => {
                 </button>
                  <button 
                   type="button"
-                  onClick={() => setShowSellForm(false)}
+                  onClick={() =>{ setShowSellForm(false)
+                     setSuccess(false);
+                     setError(null)
+                  }}
                   className="flex-1 border border-white py-3 rounded-lg hover:bg-gray-400 transition duration-300"
                 >
                   Cancel

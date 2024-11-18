@@ -4,6 +4,8 @@ import formidable from 'formidable';
 import fs from 'fs';
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY as string);
+const sender= process.env.SENDER_EMAIL 
+const reciever= process.env.RECIEVER_EMAIL 
 
 export const config = {
   api: {
@@ -39,8 +41,8 @@ export async function POST(req: NextRequest): Promise<Response> {
         }
 
         const msg: MailDataRequired = {
-          to: 'williamtjose@outlook.com', // replace with actual recipient email
-          from: 'josewirri@hotmail.com', // replace with your verified sender email
+          to: reciever!, // replace with actual recipient email
+          from: sender!, // replace with your verified sender email
           subject: 'New Device Sell Request',
           html: `
             <h2>New Device Sell Request</h2>

@@ -133,6 +133,8 @@ const SolarCalculator = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
     
     try {
       const response = await fetch('/api/send-quote', {

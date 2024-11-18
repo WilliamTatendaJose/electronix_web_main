@@ -3,6 +3,8 @@ import sgMail from '@sendgrid/mail'
 
 // Initialize SendGrid with your API key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY as string)
+const sender= process.env.SENDER_EMAIL 
+const reciever= process.env.RECIEVER_EMAIL 
 
 export async function POST(request: Request) {
   const data = await request.json()
@@ -13,8 +15,8 @@ export async function POST(request: Request) {
   ).join('');
 
   const msg = {
-    to: 'williamtjose@outlook.com', // Change this to your recipient
-    from: 'josewirri@hotmail.com', // Change this to your verified sender
+    to: reciever!, // Change this to your recipient
+    from: sender!, // Change this to your verified sender
     subject: `New order placed from ${customer.name}`,
     text: `Name: ${customer.name}\nEmail: ${customer.email}\nphone: ${customer.phone}`,
     html: `
@@ -23,7 +25,6 @@ export async function POST(request: Request) {
       <p><strong>Total Price:</strong> ${total}</p>
       <p><strong>Order Date:</strong>${orderDate}</p>
       <h3>Customer Information:</h3>
-      <p>${customer.address}</p>
       <strong>Name:</strong> ${customer.name}<br>
       <strong>Email:</strong> ${customer.email}<br>
       <strong>phone:</strong> ${customer.phone}<br>

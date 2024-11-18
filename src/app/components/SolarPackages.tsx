@@ -13,6 +13,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useToast } from '@/hooks/use-toast'
 
+ 
+
 const packages = [
   {
     name: "Basic Package",
@@ -89,6 +91,9 @@ const packages = [
 export default function Component() {
   const [selectedPackage, setSelectedPackage] = useState<string | null>(null)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess]= useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { toast } = useToast()
   const handleGetStarted = (packageName: string) => {
     setSelectedPackage(packageName)
@@ -96,52 +101,65 @@ export default function Component() {
   }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault(); 
+    setError(null);
+    setLoading(true);
+
     const formData = new FormData(event.currentTarget)
-    const orderDate= new Date().toISOString()
-    const orderData={
-      customer: formData,
-      orderDate:orderDate
+    const name = formData.get('name')
+    const email = formData.get('email')
+    const phone = formData.get('phone')
+    const address = formData.get('address')
+    const orderDate = new Date().toISOString()
+    const orderData = {
+      name,
+      email,
+      phone,
+      address,
+      selectedPackage,
+      orderDate: orderDate
     }
 
-    try{
-      const response = await fetch('api/get-solar',{
-        method: 'POST', 
-        headers:{
+    try {
+      const response = await fetch('api/get-solar', {
+        method: 'POST',
+        headers: {
           'Content-Type': 'application/json'
         },
-        body:JSON.stringify(orderData)
+        body: JSON.stringify(orderData)
       })
 
-      if(response.ok){
-      toast({
-      title: "Order Placed",
-      description: `Thank you for your order of the ${selectedPackage}. We'll be in touch soon!`,
-    })
-    setIsDialogOpen(false)
-
-      }
-    
-    else{
+      if (response.ok) {
+        setSuccess(true);
+        setError(null);
+        toast({
+          title: "Order Placed",
+          description: `Thank you for your order of the ${selectedPackage}. We'll be in touch soon!`,
+        })
       
+      } else {
+        const errorMessage = await response.text();
+        setError(errorMessage);
+        toast({
+          title: "Error Occurred",
+          description: `There was an issue with your order of the ${selectedPackage}. Please try again.`,
+        })
+        
+      }
+    } catch (error: unknown) {
+    
+       if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
       toast({
-      title: "error Occured ",
-      description: `Thank you for your order of the ${selectedPackage}. Please try again`,
-    })
-     setIsDialogOpen(false)
-
+        title: "Error",
+        description: "An unexpected error occurred. Please try again later.",
+      })
+    }finally{
+      setLoading(false);
     }
-  }
-    catch(error:unknown){
-     console.log(error)
-
-    }
-
-    // Simulate sending an email
-  
-
-    
-    
   }
 
   return (
@@ -260,11 +278,34 @@ export default function Component() {
                 </Label>
                 <Input id="phone" name="phone" type="tel" className="col-span-3" required />
               </div>
+               <div className="grid grid-cols-4 items-center gap-4">
+                <Label htmlFor="address" className="text-right">
+                  Address
+                </Label>
+                <Input id="address" name="address" type="tel" className="col-span-3" required />
+              </div>
             </div>
             <DialogFooter>
-              <Button className="bg-white text-black"type="submit">Place Order</Button>
+              <Button className="bg-white hover:bg-gray-400 text-black"
+              disabled={loading}
+              type="submit">
+                {loading ? 'Placing Order...' : 'Place Order'}
+              </Button>
+
+              
             </DialogFooter>
+            {success && (
+            <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mt-6">
+              Order Placed Successfully!
+            </div>
+          )}
+          {error && (
+            <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mt-6">
+              An error occured please try again later
+            </div>
+          )}
           </form>
+          
         </DialogContent>
       </Dialog>
     </div>

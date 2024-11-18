@@ -3,22 +3,26 @@ import sgMail from '@sendgrid/mail'
 
 // Initialize SendGrid with your API key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY as string)
+const sender= process.env.SENDER_EMAIL 
+const reciever= process.env.RECIEVER_EMAIL 
 
 export async function POST(request: Request) {
   const data = await request.json()
-  const { customer, orderDate} = data
+
+   const {name, email, phone, address, selectedPackage, orderDate }=data
 
   const msg = {
-    to: 'williamtjose@outlook.com', // Change this to your recipient
-    from: 'josewirri@hotmail.com', // Change this to your verified sender
-    subject: `New Solar Order for : ${customer.packageName}`,
-    text: `Name: ${customer.name }\nEmail: ${customer.email}\nPhone: ${customer.phone}\nSystem Size: ${customer.packageName}`,
+    to: reciever!, // Change this to your recipient
+    from: sender!, // Change this to your verified sender
+    subject: `New Solar Order for : ${selectedPackage}`,
+    text: `Name: ${name }\nEmail: ${email}\nPhone: ${phone}\nSystem Size: ${selectedPackage}`,
     html: `
-      <strong>Name:</strong> ${customer.name}<br>
-      <strong>Email:</strong> ${customer.email}<br>
-      <strong>Phone:</strong> ${customer.phone}<br>
-      <strong>System Size:</strong> ${customer.packageName}<br>
-      <strong>System Size:</strong> ${orderDate}<br>
+      <strong>Name:</strong> ${name}<br>
+      <strong>Email:</strong> ${email}<br>
+      <strong>Phone:</strong> ${phone}<br>
+      <strong>Address:</strong> ${address}<br>
+      <strong>System Size:</strong> ${selectedPackage}<br>
+      <strong>Order Date:</strong> ${orderDate}<br>
     `,
   }
 

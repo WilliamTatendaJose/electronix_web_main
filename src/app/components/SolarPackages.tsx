@@ -62,7 +62,7 @@ const packages = [
   {
     name: "Elite Package",
     description: "Complete energy independence",
-    price: "$8,599",
+    price: "$7,599",
     components: [
       "12x Solar Panels (400W each)",
       "1x 10kW Inverter",

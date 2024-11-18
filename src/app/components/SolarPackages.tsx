@@ -17,12 +17,12 @@ const packages = [
   {
     name: "Basic Package",
     description: "Perfect for small households",
-    price: "$1,999",
+    price: "$1,699",
     components: [
       "4x Solar Panels (400W each)",
       "1x 3kW Inverter",
       "Basic Mounting System",
-      "5.4kWh Battery Unit"
+      "2.4kWh Battery Unit"
     ],
     powers: [
       "Small Fridge",
@@ -39,7 +39,7 @@ const packages = [
   {
     name: "Premium Package",
     description: "Ideal for medium to large homes",
-    price: "$3,999",
+    price: "$2,999",
     components: [
       "8x Solar Panels (400W each)",
       "1x 5kW Inverter",

@@ -18,6 +18,7 @@ import desiging from"../components/assets/desiging.jpg";
 
 
 import Image from "next/image";
+const shop= "/shop";
 
 const ServiceSec = () => {
   return (
@@ -43,7 +44,7 @@ const ServiceSec = () => {
 
       <ServiceSection
         title="Consumer Devices"
-        description="Expert repair services for all your personal electronics. From smartphones to laptops, consoles, tablets to smart home devices, our skilled technicians can diagnose and fix a wide range of issues, ensuring your devices work like new."
+        description="Expert repair services for all your personal electronics. From smartphones to laptops, consoles, tablets to smart home devices, our skilled technicians can diagnose and fix a wide range of issues, ensuring your devices work like new. "
         icon={<Smartphone className="w-12 h-12" />}
         imageSrc={laptop}
         features={[
@@ -51,9 +52,13 @@ const ServiceSec = () => {
           "Genuine parts and accessories",
           "Free diagnostics",
           "90-day warranty on all repairs",
+          // eslint-disable-next-line react/jsx-key
+          <button onClick={() => window.location.href = shop} className=" text-white  underline hover:bg-gray-200 ">Shop here</button>,
         ]}
         isReversed={true}
+        
       />
+      
 
       <ServiceSection
         title="Industrial Solutions"
@@ -80,8 +85,13 @@ const ServiceSec = () => {
           "Solar maintenance",
           "Energy storage system optimization",
           "Grid integration services",
+           // eslint-disable-next-line react/jsx-key
+          <button onClick={() => window.location.href ="/solar"} className=" text-white underline hover:bg-gray-200 ">Design Your System</button>,
+          
         ]}
         isReversed={true}
+    
+      
       />
 
       <ServiceSection

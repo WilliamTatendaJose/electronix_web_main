@@ -253,7 +253,7 @@ export default function Component() {
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Order {selectedPackage}</DialogTitle>
+            <DialogTitle><p className="text-black text-left">Order {selectedPackage}</p></DialogTitle>
             <DialogDescription>
               Fill out the form below to place your order for the {selectedPackage}.
             </DialogDescription>
@@ -261,32 +261,32 @@ export default function Component() {
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
+                <Label htmlFor="name" className="text-black text-right">
                   Name
                 </Label>
                 <Input id="name" name="name" className="col-span-3" required />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="email" className="text-right">
+                <Label htmlFor="email" className=" text-black text-right">
                   Email
                 </Label>
                 <Input id="email" name="email" type="email" className="col-span-3" required />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="phone" className="text-right">
+                <Label htmlFor="phone" className="text-black text-right">
                   Phone
                 </Label>
                 <Input id="phone" name="phone" type="tel" className="col-span-3" required />
               </div>
                <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="address" className="text-right">
+                <Label htmlFor="address" className="text-black text-right">
                   Address
                 </Label>
                 <Input id="address" name="address" type="address" className="col-span-3" required />
               </div>
             </div>
             <DialogFooter>
-              <Button className="bg-white hover:bg-gray-400 text-black"
+              <Button className="bg-black hover:bg-gray-400 text-white"
               disabled={loading}
               type="submit">
                 {loading ? 'Placing Order...' : 'Place Order'}

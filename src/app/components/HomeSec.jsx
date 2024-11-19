@@ -1,5 +1,8 @@
 "use client"
+import React from 'react';
 import { ChevronDown} from 'lucide-react';
+import AppointmentModal from '../components/AppointmentModel';
+
 
 
 const HomeSec=()=>{
@@ -27,6 +30,13 @@ const HomeSec=()=>{
             >
               Explore Our Services
             </button>
+            <AppointmentModal 
+            trigger={
+              <button className="border border-white m-6 rounded-lg  text-lg py-6 px-12  hover:bg-white hover:text-black transition duration-300">
+                Schedule Service
+              </button>
+            } 
+          />
           </div>
           <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
             <ChevronDown className="w-8 h-8 text-white animate-bounce" />

@@ -22,7 +22,8 @@ const RefurbishedElectronics = () => {
   const [success, setSuccess] = useState(false);
   const [successSell, setSuccessSell] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [sellLoading, setSellLoading] = useState(false);
+  const[loading, setLoading]= useState(false);
   const [showSellForm, setShowSellForm] = useState<boolean>(false);
   const [showCart, setShowCart] = useState(false);
 
@@ -63,20 +64,49 @@ const RefurbishedElectronics = () => {
   }, []);
 
 
-  const addToCart = (product: {
-      mainImage: string; id: number; name: string; condition: string; originalPrice: number; refurbishedPrice: number; sustainabilityImpact: string; 
+//   const addToCart = (product: {
+//       mainImage: string; id: number; name: string; condition: string; originalPrice: number; refurbishedPrice: number; sustainabilityImpact: string; 
+// }) => {
+//     const existingItem = cart.find(item => item.id === product.id);
+//     if (existingItem) {
+//       setCart(cart.map(item => 
+//         item.id === product.id 
+//           ? { ...item, quantity: item.quantity + 1 }
+//           : item
+//       ));
+//     } else {
+//       setCart( [...cart, { ...product, quantity: 1 }]);
+//     }
+//   };
+const addToCart = (product: {
+  mainImage: string; 
+  id: number; 
+  name: string; 
+  condition: string; 
+  originalPrice: number; 
+  refurbishedPrice: number; 
+  sustainabilityImpact: string; 
 }) => {
-    const existingItem = cart.find(item => item.id === product.id);
-    if (existingItem) {
-      setCart(cart.map(item => 
-        item.id === product.id 
-          ? { ...item, quantity: item.quantity + 1 }
+  setCart(prevCart => {
+    // Check if the item already exists in the cart
+    const existingItemIndex = prevCart.findIndex(item => 
+      item.id === product.id && 
+      item.condition === product.condition
+    );
+
+    if (existingItemIndex !== -1) {
+      // If item exists, increase quantity
+      return prevCart.map((item, index) => 
+        index === existingItemIndex 
+          ? { ...item, quantity: (item.quantity || 0) + 1 } 
           : item
-      ));
+      );
     } else {
-      setCart([...cart, { ...product, quantity: 1, mainImage: product.mainImage }]);
+      // If item doesn't exist, add new item with quantity 1
+      return [...prevCart, { ...product, quantity: 1 }];
     }
-  };
+  });
+};
 
   const removeFromCart = (productId: number) => {
     setCart(cart.filter(item => item.id !== productId));
@@ -105,7 +135,7 @@ const RefurbishedElectronics = () => {
 
   const handleCheckout = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    setLoading(true);
+    setSellLoading(true);
     setError(null);
     setSuccessSell(false);
     // Prepare order data
@@ -145,15 +175,104 @@ const RefurbishedElectronics = () => {
       }
     }
     finally {
-      setLoading(false);
+      setSellLoading(false);
     }
   };
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  // const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
+  //   setSuccess(false);
+  //   setError(null);
+  //   setLoading(true);
+  //   console.log("Loading state set to true");
+
+  //   try {
+  //     // Collect form data
+  //     const formDataToSend = {
+  //       deviceType: formData.deviceType,
+  //       model: formData.model,
+  //       condition: formData.condition,
+  //       pickupRequired: formData.pickupRequired,
+  //       address: formData.address,
+  //       description: formData.description,
+  //       image: imageFile, // Image file to be sent to the API
+  //     };
+
+  //     // Create FormData for image upload if applicable
+  //     if (imageFile) {
+  //       const formData = new FormData();
+  //       formData.append('image', imageFile);
+  //       formData.append('data', JSON.stringify(formDataToSend));
+
+  //       // Call the API to handle the form submission
+  //       const response = await fetch('/api/sell-device', {
+  //         method: 'POST',
+  //         body: formData,
+  //       });
+
+  //       if (response.ok) {
+  //         setSuccess(true);
+  //         setError(null);
+  //         console.log("Request successful");
+  //       } else {
+  //         const errorMessage = await response.text();
+  //         setError(errorMessage);
+         
+  //         console.log("Request failed with error:", errorMessage);
+  //       }
+  //     }
+  //   } catch (error: unknown) {
+  //     if (error instanceof Error) {
+  //       setError(error.message);
+  //       console.log("Caught error:", error.message);
+  //     } else {
+  //       setError('An unexpected error occurred');
+  //       console.log("Caught unexpected error");
+  //     }
+  //   } finally {
+  //     setLoading(false);
+  //     console.log("Loading state set to false");
+  //   }
+  // };
+const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
-  console.log("button clicked");
-  setLoading(true);
+  
+  // Form validation
+  const validateForm = () => {
+    const errors: string[] = [];
+
+    if (!formData.deviceType) {
+      errors.push('Please select a device type');
+    }
+
+    if (!formData.model || formData.model.trim() === '') {
+      errors.push('Please enter the device model');
+    }
+
+    if (!formData.condition) {
+      errors.push('Please select the device condition');
+    }
+
+    if (formData.pickupRequired && (!formData.address || formData.address.trim() === '')) {
+      errors.push('Please provide a pickup address');
+    }
+
+    return errors;
+  };
+
+  // Perform validation
+  const validationErrors = validateForm();
+  
+  if (validationErrors.length > 0) {
+    setError(validationErrors.join(', '));
+    return;
+  }
+
+  // Reset previous states
+  setSuccess(false);
   setError(null);
+  setLoading(true);
+  console.log("Loading state set to true");
 
   try {
     // Collect form data
@@ -162,48 +281,62 @@ const RefurbishedElectronics = () => {
       model: formData.model,
       condition: formData.condition,
       pickupRequired: formData.pickupRequired,
-      address: formData.address,
-      description: formData.description,
-      image: imageFile, // Image file to be sent to the API
+      address: formData.pickupRequired ? formData.address : '',
+      description: formData.description || '',
     };
 
-    // Create FormData for image upload if applicable
-    if ((formData as any).image) {
-      const formData = new FormData();
-      formData.append('image', (formData as any).image);
-      formData.append('data', JSON.stringify(formDataToSend));
+    // Create FormData for image upload
+    const submitData = new FormData();
+    
+    // Append text data as JSON
+    submitData.append('data', JSON.stringify(formDataToSend));
 
-      // Call the API to handle the form submission
-      const response = await fetch('/api/sell-device', {
-        method: 'POST',
-        body: formData,
-      });
+    // Append image if available
+    if (imageFile) {
+      submitData.append('image', imageFile);
+    }
 
-      if (response.ok) {
-        // Clear cart and show success message
-         setSuccess(true);
-        setError(null);
-        setCart([]);
-       
-      } else {
-        
-        const errorMessage = await response.text();
-        setError(errorMessage);
-      }
+    // Call the API to handle the form submission
+    const response = await fetch('/api/sell-device', {
+      method: 'POST',
+      body: submitData,
+    });
+
+    if (response.ok) {
+      const result = await response.json();
+      setSuccess(true);
+      setError(null);
+      console.log("Request successful", result);
+
+      // Optional: Reset form and close modal after successful submission
+      setTimeout(() => {
+        setShowSellForm(false);
+        // Optionally reset form data
+        // setFormData(initialFormState);
+      }, 2000);
+    } else {
+      // Handle API errors
+      const errorMessage = await response.text();
+      setError(errorMessage || 'Submission failed. Please try again.');
+      console.log("Request failed with error:", errorMessage);
     }
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError('An unexpected error occurred');
-      }
+  } catch (error: unknown) {
+    // Handle network or unexpected errors
+    if (error instanceof Error) {
+      setError(error.message);
+      console.log("Caught error:", error.message);
+    } else {
+      setError('An unexpected error occurred');
+      console.log("Caught unexpected error");
     }
-    finally {
-      setLoading(false);
-    }
+  } finally {
+    // Always set loading to false
+    setLoading(false);
+    console.log("Loading state set to false");
+  }
 };
-
   return (
+    <>
     <div className="min-h-screen bg-white">
       {/* Header with Cart Icon */}
       <header className="fixed top-0 right-0 z-50 p-4">
@@ -242,7 +375,7 @@ const RefurbishedElectronics = () => {
                 products?.scrollIntoView({ behavior: 'smooth' });}}
 
             className="border border-white px-8 py-3 rounded-lg hover:bg-white hover:text-black transition duration-300">
-              Shop Refurbished
+              Shop For Devices
             </button>
           </div>
         </div>
@@ -252,25 +385,7 @@ const RefurbishedElectronics = () => {
       {/* Featured Products with Empty State */}
       <section id="products" className="py-16 px-4 bg-black">
         <h2 className="text-4xl font-bold text-center mb-12">Featured Devices</h2>
-        
-        {featuredProducts.length === 0 ? (
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="bg-gray-900 rounded-lg p-12 flex flex-col items-center">
-              <AlertCircle size={48} className="text-gray-200 mb-4" />
-              <h3 className="text-2xl font-bold mb-2">No Devices Available</h3>
-              <p className="text-gray-200 mb-6">
-                Weare currently restocking our inventory with high-quality refurbished devices.
-                Check back soon or sell your device to us!
-              </p>
-              <button 
-                onClick={() => setShowSellForm(true)}
-                className="bg-white text-black px-8 py-3 rounded-lg hover:bg-gray-400 transition duration-300"
-              >
-                Sell Your Device
-              </button>
-            </div>
-          </div>
-        ) : (
+        {Array.isArray(featuredProducts) && featuredProducts.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {featuredProducts.map((product) => (
               <div key={product.id} className="bg-gray-900 p-6 rounded-lg">
@@ -299,7 +414,28 @@ const RefurbishedElectronics = () => {
               </div>
             ))}
           </div>
+        ) : (
+          <div className="max-w-2xl mx-auto text-center">
+            <div className="bg-gray-900 rounded-lg p-12 flex flex-col items-center">
+              <AlertCircle size={48} className="text-gray-200 mb-4" />
+              <h3 className="text-2xl font-bold mb-2">No Devices Available</h3>
+              <p className="text-gray-200 mb-6">
+                We are currently restocking our inventory with high-quality devices.
+                Check back soon or sell your device to us!
+              </p>
+              <button 
+                onClick={() => setShowSellForm(true)}
+                className="bg-white text-black px-8 py-3 rounded-lg hover:bg-gray-400 transition duration-300"
+              >
+                Sell Your Device
+              </button>
+            </div>
+          </div>
         )}
+  
+       
+          
+      
       </section>
 
       {/* Cart Sidebar */}
@@ -477,7 +613,7 @@ const RefurbishedElectronics = () => {
                   type="submit"
                   className="w-full bg-white text-black py-3 rounded-lg hover:bg-gray-400 transition duration-300"
                 >
-                    {loading ? 'Placing Order...' : ' Place Order'}
+                    {sellLoading ? 'Placing Order...' : ' Place Order'}
                   
                 </button>
                 {successSell && (
@@ -597,10 +733,10 @@ const RefurbishedElectronics = () => {
               <div className="flex space-x-4">
                 <button 
                   type="submit"
-                  className="flex-1 bg-white  text-black py-3 rounded-lg hover:bg-gray-400 transition duration-300"
+                  className="flex-1 bg-white text-black py-3 rounded-lg hover:bg-gray-400 transition duration-300"
+                  disabled={loading}
                 >
-                 {loading ? 'Placing Sell Request...' : ' Sell Device'}
-                  
+                  {loading ? 'Placing Sell Request...' : (success ? 'Request Sent Successfully' : 'Sell Device')}
                 </button>
                  <button 
                   type="button"
@@ -630,6 +766,7 @@ const RefurbishedElectronics = () => {
         </div>
       )}
     </div>
+    </>
   );
 };
 

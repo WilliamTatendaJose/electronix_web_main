@@ -71,7 +71,8 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ trigger }) => {
             headers:{
                 'Content-Type':'application/json'
 
-            },body:JSON.stringify(formData),
+            },
+            body:JSON.stringify( formData)
 
         });
          if (response.ok) {
@@ -371,7 +372,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ trigger }) => {
                         <button
                           type="submit"
                           className="px-6 py-2 rounded-lg bg-blue-950 text-white hover:bg-blue-900 transition-colors ml-auto"
-                        disabled={loading}
+                          disabled={loading}
                         >
                             {loading ? 'Scheduling...' : ' Schedule Appointment'}
                         </button>

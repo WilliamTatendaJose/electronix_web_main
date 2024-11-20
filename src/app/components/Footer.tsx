@@ -1,4 +1,4 @@
-"use server"
+"use client"
 const Footer=()=>{
     const currentYear = new Date().getFullYear();
 

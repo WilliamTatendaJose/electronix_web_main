@@ -10,7 +10,7 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY as string);
 
 // Email configuration
 const sender = process.env.SENDER_EMAIL;
-const receiver = process.env.RECEIVER_EMAIL;
+const receiver = process.env.RECIEVER_EMAIL;
 
 // Disable body parsing to handle file uploads
 export const config = {

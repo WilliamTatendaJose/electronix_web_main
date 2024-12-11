@@ -12,7 +12,8 @@ interface BlogPageProps{
 
 
 export default async function BlogPost(props: BlogPageProps) {
-  // This would typically fetch from your CMS or database
+ 
+    
 const params = await props.params;
 const id = await params.id;
 const fetchPostData = async (id: string) => {

@@ -20,7 +20,7 @@ const HeaderSec=()=>{
                             <Link href="/#contact-form" className="hover:text-gray-600">Contact</Link>
                             <Link href="/solar" className="hover:text-gray-600">Solar</Link>
                             <Link href="/shop" className="hover:text-gray-600">Shop here</Link>
-                             <Link href="/blog" className="hover:text-gray-600">Shop here</Link>
+                             <Link href="/blog" className="hover:text-gray-600">blog</Link>
                             
                         </div>
 

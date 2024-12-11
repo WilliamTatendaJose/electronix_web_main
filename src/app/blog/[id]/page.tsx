@@ -2,7 +2,7 @@ import { ArrowLeft } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Comments } from '@/app/components/comments'
-import client from '@/app/shop/client'
+import client from '@/lib/client'
 import { notFound } from 'next/navigation'
  
 
@@ -13,7 +13,7 @@ interface BlogPageProps{
 
 export default async function BlogPost(props: BlogPageProps) {
  
-    
+
 const params = await props.params;
 const id = await params.id;
 const fetchPostData = async (id: string) => {
@@ -23,6 +23,7 @@ const fetchPostData = async (id: string) => {
       date,
       author,
       excerpt,
+      content,
       image
         asset->{
           url

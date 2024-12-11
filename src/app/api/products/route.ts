@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import imageUrlBuilder from '@sanity/image-url';
 import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
-import client from '../../shop/client';
+import client from '../../../lib/client';
 
 interface RefurbishedDevice {
   _id: string;

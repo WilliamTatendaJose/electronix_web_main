@@ -77,7 +77,36 @@ const RefurbishedElectronics = () => {
 //     } else {
 //       setCart( [...cart, { ...product, quantity: 1 }]);
 //     }
-//   };
+// //   };
+// const addToCart = (product: {
+//   mainImage: string; 
+//   id: number; 
+//   name: string; 
+//   condition: string; 
+//   originalPrice: number; 
+//   refurbishedPrice: number; 
+//   sustainabilityImpact: string; 
+// }) => {
+//   setCart(prevCart => {
+//     // Check if the item already exists in the cart
+//     const existingItemIndex = prevCart.findIndex(item => 
+//       item.id === product.id && 
+//       item.condition === product.condition
+//     );
+
+//     if (existingItemIndex !== -1) {
+//       // If item exists, increase quantity
+//       return prevCart.map((item, index) => 
+//         index === existingItemIndex 
+//           ? { ...item, quantity: (item.quantity || 0) + 1 } 
+//           : item
+//       );
+//     } else {
+//       // If item doesn't exist, add new item with quantity 1
+//       return [...prevCart, { ...product, quantity: 1 }];
+//     }
+//   });
+// };
 const addToCart = (product: {
   mainImage: string; 
   id: number; 
@@ -87,7 +116,7 @@ const addToCart = (product: {
   refurbishedPrice: number; 
   sustainabilityImpact: string; 
 }) => {
-  setCart(prevCart => {
+  setCart((prevCart: Array<typeof product & { quantity: number }>) => {
     // Check if the item already exists in the cart
     const existingItemIndex = prevCart.findIndex(item => 
       item.id === product.id && 
@@ -98,7 +127,7 @@ const addToCart = (product: {
       // If item exists, increase quantity
       return prevCart.map((item, index) => 
         index === existingItemIndex 
-          ? { ...item, quantity: (item.quantity || 0) + 1 } 
+          ? { ...item, quantity: item.quantity + 1 } 
           : item
       );
     } else {
@@ -179,61 +208,6 @@ const addToCart = (product: {
     }
   };
 
-  // const handleSubmit = async (e: { preventDefault: () => void; }) => {
-  //   e.preventDefault();
-  //   setSuccess(false);
-  //   setError(null);
-  //   setLoading(true);
-  //   console.log("Loading state set to true");
-
-  //   try {
-  //     // Collect form data
-  //     const formDataToSend = {
-  //       deviceType: formData.deviceType,
-  //       model: formData.model,
-  //       condition: formData.condition,
-  //       pickupRequired: formData.pickupRequired,
-  //       address: formData.address,
-  //       description: formData.description,
-  //       image: imageFile, // Image file to be sent to the API
-  //     };
-
-  //     // Create FormData for image upload if applicable
-  //     if (imageFile) {
-  //       const formData = new FormData();
-  //       formData.append('image', imageFile);
-  //       formData.append('data', JSON.stringify(formDataToSend));
-
-  //       // Call the API to handle the form submission
-  //       const response = await fetch('/api/sell-device', {
-  //         method: 'POST',
-  //         body: formData,
-  //       });
-
-  //       if (response.ok) {
-  //         setSuccess(true);
-  //         setError(null);
-  //         console.log("Request successful");
-  //       } else {
-  //         const errorMessage = await response.text();
-  //         setError(errorMessage);
-         
-  //         console.log("Request failed with error:", errorMessage);
-  //       }
-  //     }
-  //   } catch (error: unknown) {
-  //     if (error instanceof Error) {
-  //       setError(error.message);
-  //       console.log("Caught error:", error.message);
-  //     } else {
-  //       setError('An unexpected error occurred');
-  //       console.log("Caught unexpected error");
-  //     }
-  //   } finally {
-  //     setLoading(false);
-  //     console.log("Loading state set to false");
-  //   }
-  // };
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
   

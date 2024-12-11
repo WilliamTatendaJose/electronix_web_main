@@ -11,7 +11,13 @@ interface Post {
 }
 
 export default async function BlogPage() {
- const posts = await client.fetch(`*[_type == "post"]{_id, title, excerpt, date, category}`) 
+  let posts: Post[] = [];
+
+  try {
+    posts = await client.fetch(`*[_type == "post"]{_id, title, excerpt, date, category}`); 
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+  }
 
   return (
     <div className="min-h-screen bg-black">
@@ -26,20 +32,26 @@ export default async function BlogPage() {
         </div>
         
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {posts.map((post: Post) => (
-            <Link key={post._id} href={`/blog/${post._id}`}>
-              <Card className="h-full bg-gray-900 border-gray-800 hover:border-blue-500 transition-colors">
-                <CardHeader>
-                  <div className="text-sm text-blue-400 mb-2">{post.category}</div>
-                  <CardTitle className="text-xl text-white">{post.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-400 mb-4">{post.excerpt}</p>
-                  <div className="text-sm text-gray-500">{post.date}</div>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
+          {posts.length > 0 ? (
+            posts.map((post: Post) => (
+              <Link key={post._id} href={`/blog/${post._id}`}>
+                <Card className="h-full bg-gray-900 border-gray-800 hover:border-blue-500 transition-colors">
+                  <CardHeader>
+                    <div className="text-sm text-blue-400 mb-2">{post.category}</div>
+                    <CardTitle className="text-xl text-white">{post.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-gray-400 mb-4">{post.excerpt}</p>
+                    <div className="text-sm text-gray-500">{post.date}</div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))
+          ) : (
+            <div className="text-center text-white">
+              <p>Loading...</p>
+            </div>
+          )}
         </div>
       </div>
     </div>

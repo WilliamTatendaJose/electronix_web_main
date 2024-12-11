@@ -20,7 +20,7 @@ const HeaderSec=()=>{
                             <Link href="/#contact-form" className="hover:text-gray-600">Contact</Link>
                             <Link href="/solar" className="hover:text-gray-600">Solar</Link>
                             <Link href="/shop" className="hover:text-gray-600">Shop here</Link>
-                             <Link href="/blog" className="hover:text-gray-600">blog</Link>
+                             <Link href="/blog" className="hover:text-gray-600">Blog</Link>
                             
                         </div>
 
@@ -47,9 +47,9 @@ const HeaderSec=()=>{
                  <a className="text-2xl font-medium hover:text-gray-300" href="/shop" onClick={() => setIsMenuOpen(false)}>
                  Shop Here
                  </a>
-                  <a className="text-2xl font-medium hover:text-gray-300" href="/blog" onClick={() => setIsMenuOpen(false)}>
+                  <Link className="text-2xl font-medium hover:text-gray-300" href="/blog" onClick={() => setIsMenuOpen(false)}>
                  blog
-                 </a>
+                 </Link>
                  </div>
                 )}
             </header>

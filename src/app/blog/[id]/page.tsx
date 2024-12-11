@@ -1,28 +1,74 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Comments } from '@/app/components/comments';
+// import { Comments } from '@/app/components/comments';
 import client from '@/lib/client';
 import { notFound } from 'next/navigation';
 
 interface BlogPageProps {
-  params: { id: string }; // Adjusted to directly use the expected shape.
+  params: { id: string };
 }
 
 export default async function BlogPost({ params }: BlogPageProps) {
-  const id = params.id; // Directly extract `id` from `params`.
+  const id = params.id;
 
   const fetchPostData = async (id: string) => {
     const query = `*[_type == "post" && _id == $id][0] {
       _id,
       title,
       date,
-      author,
+      author {
+        name,
+        email,
+        image {
+          asset -> {
+            url
+          }
+        }
+      },
       excerpt,
-      content,
-      image {
+      content[] {
+        ...,
+        markDefs,
+        children[] {
+          text
+        }
+      },
+      mainImage {
         asset -> {
           url
+        },
+        alt
+      },
+      comments[] {
+        author {
+          name,
+          email,
+          image {
+            asset -> {
+              url
+            }
+          }
+        },
+        content,
+        createdAt,
+        likes,
+        dislikes,
+        replies[] {
+          author {
+            name,
+            email,
+            image {
+              asset -> {
+                url
+              }
+            }
+          },
+          content,
+          createdAt,
+          likes,
+          dislikes
         }
       }
     }`;
@@ -52,15 +98,15 @@ export default async function BlogPost({ params }: BlogPageProps) {
           </h1>
 
           <div className="flex items-center text-gray-400 mb-8">
-            <span>{post.date}</span>
+            <span>{new Date(post.date).toLocaleDateString()}</span>
             <span className="mx-2">•</span>
-            <span>{post.author}</span>
+            <span>{post.author?.name}</span>
           </div>
 
-          {post.image?.asset?.url && (
+          {post.mainImage?.asset?.url && (
             <Image
-              src={post.image.asset.url}
-              alt="Blog post cover image"
+              src={post.mainImage.asset.url}
+              alt={post.mainImage.alt || 'Blog post cover image'}
               width={800}
               height={400}
               className="rounded-lg mb-8"
@@ -68,14 +114,14 @@ export default async function BlogPost({ params }: BlogPageProps) {
           )}
 
           <div className="prose prose-invert max-w-none">
-            {post.content.split('\n').map((paragraph: string, index: number) => (
+            {post.content?.map((block: any, index: number) => (
               <p key={index} className="text-gray-300 mb-6">
-                {paragraph}
+                {block.children?.map((child: any) => child.text).join(' ')}
               </p>
             ))}
           </div>
 
-          <Comments />
+          {/* <Comments postId={post._id} /> */}
         </div>
       </article>
     </div>

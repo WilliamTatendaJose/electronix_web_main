@@ -15,7 +15,7 @@ const HomeSec=()=>{
           <div className="absolute inset-0 "></div>
           <div className="relative z-10 text-center text-gray-200 space-y-6">
             <h1 className="text-5xl md:text-7xl font-bold tracking-tighter">
-              Redefining Electronics Repair
+              Redefining Electronics
             </h1>
             <p className="text-xl md:text-2xl max-w-3xl mx-auto">
               Cutting-edge solutions for businesses and individuals

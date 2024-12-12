@@ -48,7 +48,7 @@ const HeaderSec=()=>{
                  Shop Here
                  </a>
                   <Link className="text-2xl font-medium hover:text-gray-300" href="/blog" onClick={() => setIsMenuOpen(false)}>
-                 blog
+                 Blog
                  </Link>
                  </div>
                 )}

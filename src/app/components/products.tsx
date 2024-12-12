@@ -313,7 +313,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     <>
     <div className="min-h-screen bg-white">
       {/* Header with Cart Icon */}
-      <header className="fixed top-20 right-0 z-50 p-4 ">
+      <header className="fixed top-20 right-0 z-50 p-4  md:top-0 ">
         <button 
           onClick={() => setShowCart(true)}
           className="bg-black text-white rounded-full relative hover:bg-gray-800 transition duration-300"

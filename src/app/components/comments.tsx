@@ -273,12 +273,7 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
         </div>
       )}
 
-      {error && (
-        <div className="text-center text-red-500">
-          <p>{error}</p>
-        </div>
-      )}
-
+    
       {!isLoading && !error && comments.length === 0 && (
         <div className="text-center text-gray-400">
           <p>No comments yet. Be the first to comment!</p>

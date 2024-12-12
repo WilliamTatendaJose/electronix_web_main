@@ -47,12 +47,16 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ trigger }) => {
     { id: 'electronics', name: 'Electronics Repair' },
     { id: 'solar', name: 'Solar Installation' },
     { id: 'maintenance', name: 'System Maintenance' },
+     { id: 'software', name: 'Sofware Development' },
+     { id: 'design', name: 'Custom System Development' },
   ];
 
   const serviceTypes = {
     electronics: ['Phone Repair', 'Computer Repair', 'TV or Monitor Repair','Smart Board Repair', 'Gaming Cnsole repair', 'Other Electronics Repair'],
     solar: ['New Installation', 'System Upgrade', 'Maintenance','Troubleshooting'],
     maintenance: ['Regular Service', 'System Inspection', 'Emergency Repair'],
+    software: ['Web Development', 'Mobile Application Development', 'Other'],
+    design : ['PCB Design','Custom System Design','Other'],
   };
 
   const timeSlots = [
@@ -323,12 +327,12 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ trigger }) => {
             <CardDescription>Book your service</CardDescription>
           </CardHeader>
           <CardContent>
-           <form onSubmit={handleSubmit} className="space-y-8">
-                    <div className="flex items-center justify-between mb-8">
+           <form onSubmit={handleSubmit} className="space-y-8 px-4 sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-between mb-8 flex-wrap">
                       {[1, 2, 3,4].map((stepNumber) => (
                         <div
                           key={stepNumber}
-                          className="flex items-center"
+                          className="flex items-center mb-2"
                         >
                           <div
                             className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -337,7 +341,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ trigger }) => {
                           >
                             {stepNumber}
                           </div>
-                          {stepNumber < 4 && (
+                          {stepNumber < 5 && (
                             <div
                               className={`w-24 h-1 ${
                                 step > stepNumber ? 'bg-blue-950' : 'bg-gray-200'
@@ -350,12 +354,12 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ trigger }) => {
 
                     {renderStep()}
 
-                    <div className="flex justify-between mt-8">
+                    <div className="flex flex-col sm:flex-row justify-between mt-8">
                       {step > 1 && (
                         <button
                           type="button"
                           onClick={() => setStep(step - 1)}
-                          className="px-6 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition-colors"
+                          className="px-6 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition-colors mb-2 sm:mb-0"
                         >
                           Previous
                         </button>

@@ -56,7 +56,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ trigger }) => {
     solar: ['New Installation', 'System Upgrade', 'Maintenance','Troubleshooting'],
     maintenance: ['Regular Service', 'System Inspection', 'Emergency Repair'],
     custom:['PCB Design', 'Industrial System Design','Embedded System Design','Other'],
-    sotware:[' Web Development','Mobile Application Development','Desktop Application Development', 'Other']
+    software:['Web Development','Mobile Application Development','Desktop Application Development', 'Other']
   };
 
   const timeSlots = [

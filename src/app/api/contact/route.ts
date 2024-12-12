@@ -25,6 +25,7 @@ export async function POST(request: Request) {
   }
 
   try {
+
     await sgMail.send(msg)
     return NextResponse.json({ message: 'Thank you for your message. We will be in touch soon!' })
   } catch (error) {

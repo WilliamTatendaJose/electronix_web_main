@@ -2,15 +2,16 @@
 import { ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-// import { Comments } from '@/app/components/comments';
+import { Comments } from '@/app/components/comments';
 import client from '@/lib/client';
 import { notFound } from 'next/navigation';
 
 interface BlogPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export default async function BlogPost({ params }: BlogPageProps) {
+export default async function BlogPost(props: BlogPageProps) {
+  const params = await props.params;
   const id = params.id;
 
   const fetchPostData = async (id: string) => {
@@ -120,8 +121,7 @@ export default async function BlogPost({ params }: BlogPageProps) {
               </p>
             ))}
           </div>
-
-          {/* <Comments postId={post._id} /> */}
+<Comments postId={post._id} initialComments={post.comments} />
         </div>
       </article>
     </div>

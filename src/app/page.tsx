@@ -7,6 +7,7 @@ import CallToAction from './components/CallToAction';
 import WhyChooseUS from './components/WhyChooseUs';
 import ContactForm from './components/ContactForm';
 import Head from 'next/head';
+import { GoogleAnalytics } from "nextjs-google-analytics";
 
 export default function Home() {
   return (
@@ -29,7 +30,7 @@ export default function Home() {
            
         <main className="flex-1">
            
-          
+           <GoogleAnalytics trackPageViews />
            <HomeSec/>
            <AboutUs/>
            <section id='services' className='py-24 px-4 md:px-6 bg-black'>

@@ -6,6 +6,7 @@ import { Comments } from '@/app/components/comments';
 import client from '@/lib/client';
 import { notFound } from 'next/navigation';
 import Head from 'next/head';
+import { PortableText } from '@portabletext/react';
 
 interface BlogPageProps {
   params: Promise<{ id: string }>;
@@ -20,7 +21,6 @@ export default async function BlogPost(props: BlogPageProps) {
       _id,
       title,
       date,
-      slug
       author {
         name,
         email,
@@ -33,8 +33,18 @@ export default async function BlogPost(props: BlogPageProps) {
       excerpt,
       content[] {
         ...,
-        markDefs,
+        _type,
+        style,
+        markDefs[] {
+          ...,
+          _type,
+          _key,
+          href
+        },
         children[] {
+          ...,
+          _type,
+          marks,
           text
         }
       },
@@ -84,10 +94,11 @@ export default async function BlogPost(props: BlogPageProps) {
     notFound();
   }
 
-  return (
+  console.log('Post content:', JSON.stringify(post.content, null, 2));
 
+  return (
     <>
-    <Head>
+      <Head>
         <title>{post.title}</title>
         <meta name="description" content={post.excerpt} />
         <meta property="og:title" content={post.title} />
@@ -96,7 +107,6 @@ export default async function BlogPost(props: BlogPageProps) {
         <meta property="og:url" content={`https://www.techrehub.co.zw/${post.slug}`} />
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <main>
      <div className="min-h-screen bg-black">
       <article className="container mx-auto px-4 py-16">
         <Link
@@ -129,21 +139,46 @@ export default async function BlogPost(props: BlogPageProps) {
           )}
 
           <div className="prose prose-invert max-w-none">
-            {post.content?.map((block: any, index: number) => (
-              <p key={index} className="text-gray-300 mb-6">
-                {block.children?.map((child: any) => child.text).join(' ')}
-              </p>
-            ))}
+            {post.content ? (
+              <PortableText 
+                value={post.content}
+                components={{
+                  block: {
+                    normal: ({children}) => {
+                      return <p className="text-gray-300 mb-6">{children}</p>;
+                    },
+                    h1: ({children}) => <h1 className="text-3xl font-bold mb-4 text-white">{children}</h1>,
+                    h2: ({children}) => <h2 className="text-2xl font-bold mb-3 text-white">{children}</h2>,
+                    h3: ({children}) => <h3 className="text-xl font-bold mb-3 text-white">{children}</h3>,
+                    blockquote: ({children}) => <blockquote className="border-l-4 border-blue-500 pl-4 italic my-4">{children}</blockquote>,
+                  },
+                  list: {
+                    bullet: ({children}) => <ul className="list-disc list-inside mb-4 text-gray-300">{children}</ul>,
+                    number: ({children}) => <ol className="list-decimal list-inside mb-4 text-gray-300">{children}</ol>,
+                  },
+                  marks: {
+                    strong: ({children}) => <strong className="font-bold">{children}</strong>,
+                    em: ({children}) => <em className="italic">{children}</em>,
+                    code: ({children}) => <code className="bg-gray-800 rounded px-1 py-0.5">{children}</code>,
+                    link: ({value, children}) => {
+                      return (
+                        <a href={value?.href} className="text-blue-400 hover:text-blue-300 underline">
+                          {children}
+                        </a>
+                      );
+                    },
+                  }
+                }}
+              />
+            ) : (
+              <p className="text-gray-300">No content available</p>
+            )}
           </div>
-<Comments postId={post._id} initialComments={post.comments} />
+
+          <Comments postId={post._id} initialComments={post.comments} />
         </div>
       </article>
-        </div>
-      </main>
-    
-    
-    
+    </div>
     </>
-   
   );
 }

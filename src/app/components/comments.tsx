@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { ThumbsUp, ThumbsDown, Reply, Send } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Reply, Send, Loader2 } from 'lucide-react';
 import client from '@/lib/client';
 
 interface Comment {
@@ -38,6 +38,8 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
   const [replyContent, setReplyContent] = useState<{ [key: string]: string }>({});
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [reactionLoading, setReactionLoading] = useState<{[key: string]: boolean}>({});
 
   // Fetch comments for specific post
   useEffect(() => {
@@ -90,6 +92,7 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+    setIsSubmitting(true);
 
     try {
       const commentDoc: Comment = {
@@ -124,6 +127,8 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
     } catch (err) {
       console.error('Error submitting comment:', err);
       setError('Failed to submit comment. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -182,6 +187,8 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
   // Increment likes/dislikes
   const handleReaction = async (commentId: string, type: 'likes' | 'dislikes', isReply?: boolean) => {
     setError(null);
+    const reactionKey = `${commentId}-${type}`;
+    setReactionLoading(prev => ({ ...prev, [reactionKey]: true }));
 
     try {
       // Update in Sanity
@@ -229,6 +236,8 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
     } catch (err) {
       console.error(`Error updating ${type}:`, err);
       setError(`Failed to update ${type}. Please try again.`);
+    } finally {
+      setReactionLoading(prev => ({ ...prev, [reactionKey]: false }));
     }
   };
 
@@ -262,8 +271,19 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
             className="w-full bg-gray-800 text-white border-gray-700 text-sm sm:text-base"
           />
         </div>
-        <Button type="submit" className="w-full sm:w-auto bg-white text-black rounded-lg hover:bg-gray-200 text-sm sm:text-lg py-4 sm:py-6">
-          Post Comment
+        <Button 
+          type="submit" 
+          className="w-full sm:w-auto bg-white text-black rounded-lg hover:bg-gray-200 text-sm sm:text-lg py-4 sm:py-6"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Posting...
+            </>
+          ) : (
+            'Post Comment'
+          )}
         </Button>
       </form>
 
@@ -274,7 +294,7 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
       )}
 
     
-      {!isLoading && !error && comments.length === 0 && (
+      {!isLoading &&  comments.length === 0 && (
         <div className="text-center text-gray-400">
           <p>No comments yet. Be the first to comment!</p>
         </div>
@@ -296,15 +316,27 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
                 <div className="flex space-x-2">
                   <button
                     onClick={() => handleReaction(comment._id, 'likes')}
-                    className="flex items-center text-gray-400 hover:text-white"
+                    className="flex items-center text-gray-400 hover:text-white transition-colors"
+                    disabled={reactionLoading[`${comment._id}-likes`]}
                   >
-                    <ThumbsUp className="w-4 h-4 mr-1" /> {comment.likes}
+                    {reactionLoading[`${comment._id}-likes`] ? (
+                      <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                    ) : (
+                      <ThumbsUp className="w-4 h-4 mr-1 transform hover:scale-110 transition-transform" />
+                    )}
+                    {comment.likes}
                   </button>
                   <button
                     onClick={() => handleReaction(comment._id, 'dislikes')}
-                    className="flex items-center text-gray-400 hover:text-white"
+                    className="flex items-center text-gray-400 hover:text-white transition-colors"
+                    disabled={reactionLoading[`${comment._id}-dislikes`]}
                   >
-                    <ThumbsDown className="w-4 h-4 mr-1" /> {comment.dislikes}
+                    {reactionLoading[`${comment._id}-dislikes`] ? (
+                      <Loader2 className="w-4 h-4 mr-1 animate-spin" />
+                    ) : (
+                      <ThumbsDown className="w-4 h-4 mr-1 transform hover:scale-110 transition-transform" />
+                    )}
+                    {comment.dislikes}
                   </button>
                 </div>
               </div>

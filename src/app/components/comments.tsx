@@ -9,6 +9,7 @@ import client from '@/lib/client';
 
 interface Comment {
   _id: string;
+  _key?: string;
   author: {
     name: string;
     email: string;
@@ -261,7 +262,7 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
             className="bg-gray-800 text-white border-gray-700"
           />
         </div>
-        <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white">
+        <Button type="submit" className= "bg-white text-black rounded-lg  hover:bg-gray-200 text-lg py-6">
           Post Comment
         </Button>
       </form>
@@ -287,7 +288,7 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
       {!isLoading && !error && comments.length > 0 && (
         <div className="space-y-8">
           {comments.map((comment) => (
-            <div key={comment._id} className="bg-gray-900 p-6 rounded-lg">
+            <div key={comment._key || comment._id} className="bg-gray-900 p-6 rounded-lg">
               <div className="flex justify-between items-center">
                 <div>
                   <h3 className="text-lg font-bold text-white">
@@ -361,7 +362,7 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
               {comment.replies && comment.replies.length > 0 && (
                 <div className="mt-6 pl-6 border-l border-gray-700">
                   {comment.replies.map((reply) => (
-                    <div key={reply._id} className="mt-4">
+                    <div key={reply._key || reply._id} className="mt-4">
                       <div className="flex justify-between items-center">
                         <div>
                           <h4 className="text-md font-semibold text-white">

@@ -47,16 +47,12 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ trigger }) => {
     { id: 'electronics', name: 'Electronics Repair' },
     { id: 'solar', name: 'Solar Installation' },
     { id: 'maintenance', name: 'System Maintenance' },
-     { id: 'software', name: 'Sofware Development' },
-     { id: 'design', name: 'Custom System Development' },
   ];
 
   const serviceTypes = {
     electronics: ['Phone Repair', 'Computer Repair', 'TV or Monitor Repair','Smart Board Repair', 'Gaming Cnsole repair', 'Other Electronics Repair'],
     solar: ['New Installation', 'System Upgrade', 'Maintenance','Troubleshooting'],
     maintenance: ['Regular Service', 'System Inspection', 'Emergency Repair'],
-    software: ['Web Development', 'Mobile Application Development', 'Other'],
-    design : ['PCB Design','Custom System Design','Other'],
   };
 
   const timeSlots = [
@@ -354,12 +350,12 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ trigger }) => {
 
                     {renderStep()}
 
-                    <div className="flex flex-col sm:flex-row justify-between mt-8">
+                    <div className="flex justify-between mt-8">
                       {step > 1 && (
                         <button
                           type="button"
                           onClick={() => setStep(step - 1)}
-                          className="px-6 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition-colors mb-2 sm:mb-0"
+                          className="px-6 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 transition-colors"
                         >
                           Previous
                         </button>

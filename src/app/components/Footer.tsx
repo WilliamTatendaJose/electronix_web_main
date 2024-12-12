@@ -13,7 +13,9 @@ const Footer=()=>{
             <a className="text-sm text-gray-200 hover:text-white" href="#">
               Privacy Policy
             </a>
+             Website designed by <a href="mailto:wjose@tehrehub.co.zw" className="text-blue-500 hover:underline">William Jose</a>
           </nav>
+      
         </div>
       </footer>
 

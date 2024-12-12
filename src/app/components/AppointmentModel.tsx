@@ -47,12 +47,16 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({ trigger }) => {
     { id: 'electronics', name: 'Electronics Repair' },
     { id: 'solar', name: 'Solar Installation' },
     { id: 'maintenance', name: 'System Maintenance' },
+    {id: 'software', name :'Software Development'},
+    {id: 'custom', name:'Custom System Development'},
   ];
 
   const serviceTypes = {
     electronics: ['Phone Repair', 'Computer Repair', 'TV or Monitor Repair','Smart Board Repair', 'Gaming Cnsole repair', 'Other Electronics Repair'],
     solar: ['New Installation', 'System Upgrade', 'Maintenance','Troubleshooting'],
     maintenance: ['Regular Service', 'System Inspection', 'Emergency Repair'],
+    custom:['PCB Design', 'Industrial System Design','Embedded System Design','Other'],
+    sotware:[' Web Development','Mobile Application Development','Desktop Application Development', 'Other']
   };
 
   const timeSlots = [

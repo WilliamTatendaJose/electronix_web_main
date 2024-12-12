@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Comments } from '@/app/components/comments';
 import client from '@/lib/client';
 import { notFound } from 'next/navigation';
+import Head from 'next/head';
 
 interface BlogPageProps {
   params: Promise<{ id: string }>;
@@ -19,6 +20,7 @@ export default async function BlogPost(props: BlogPageProps) {
       _id,
       title,
       date,
+      slug
       author {
         name,
         email,
@@ -83,7 +85,19 @@ export default async function BlogPost(props: BlogPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-black">
+
+    <>
+    <Head>
+        <title>{post.title}</title>
+        <meta name="description" content={post.excerpt} />
+        <meta property="og:title" content={post.title} />
+        <meta property="og:description" content={post.excerpt} />
+        <meta property="og:image" content={post.image} />
+        <meta property="og:url" content={`https://www.techrehub.co.zw/${post.slug}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
+      <main>
+     <div className="min-h-screen bg-black">
       <article className="container mx-auto px-4 py-16">
         <Link
           href="/blog"
@@ -124,6 +138,12 @@ export default async function BlogPost(props: BlogPageProps) {
 <Comments postId={post._id} initialComments={post.comments} />
         </div>
       </article>
-    </div>
+        </div>
+      </main>
+    
+    
+    
+    </>
+   
   );
 }

@@ -233,18 +233,18 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
   };
 
   return (
-    <div className="mt-16 max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold text-white mb-8">Comments</h2>
+    <div className="mt-8 w-full px-4 sm:px-0 sm:max-w-2xl mx-auto">
+      <h2 className="text-xl sm:text-2xl font-bold text-white mb-6">Comments</h2>
 
-      <form onSubmit={handleSubmit} className="mb-12">
-        <div className="grid gap-4 mb-4">
+      <form onSubmit={handleSubmit} className="mb-8">
+        <div className="grid gap-3 mb-4">
           <input
             type="text"
             placeholder="Your Name"
             value={newComment.name}
             onChange={(e) => setNewComment({ ...newComment, name: e.target.value })}
             required
-            className="bg-gray-800 text-white border-gray-700 rounded-md p-2"
+            className="w-full bg-gray-800 text-white border-gray-700 rounded-md p-2 text-sm sm:text-base"
           />
           <input
             type="email"
@@ -252,17 +252,17 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
             value={newComment.email}
             onChange={(e) => setNewComment({ ...newComment, email: e.target.value })}
             required
-            className="bg-gray-800 text-white border-gray-700 rounded-md p-2"
+            className="w-full bg-gray-800 text-white border-gray-700 rounded-md p-2 text-sm sm:text-base"
           />
           <Textarea
             placeholder="Your Comment"
             value={newComment.content}
             onChange={(e) => setNewComment({ ...newComment, content: e.target.value })}
             required
-            className="bg-gray-800 text-white border-gray-700"
+            className="w-full bg-gray-800 text-white border-gray-700 text-sm sm:text-base"
           />
         </div>
-        <Button type="submit" className= "bg-white text-black rounded-lg  hover:bg-gray-200 text-lg py-6">
+        <Button type="submit" className="w-full sm:w-auto bg-white text-black rounded-lg hover:bg-gray-200 text-sm sm:text-lg py-4 sm:py-6">
           Post Comment
         </Button>
       </form>
@@ -286,12 +286,12 @@ export function Comments({ postId, initialComments = [] }: CommentProps) {
       )}
 
       {!isLoading && !error && comments.length > 0 && (
-        <div className="space-y-8">
+        <div className="space-y-6">
           {comments.map((comment) => (
-            <div key={comment._key || comment._id} className="bg-gray-900 p-6 rounded-lg">
-              <div className="flex justify-between items-center">
+            <div key={comment._key || comment._id} className="bg-gray-900 p-4 sm:p-6 rounded-lg text-sm sm:text-base">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-0">
                 <div>
-                  <h3 className="text-lg font-bold text-white">
+                  <h3 className="text-base sm:text-lg font-bold text-white">
                     {comment.author?.name || 'Anonymous'}
                   </h3>
                   <p className="text-sm text-gray-400">

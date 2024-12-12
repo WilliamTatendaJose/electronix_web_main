@@ -18,6 +18,17 @@ interface CartItem {
   quantity: number;
 }
 
+// Add this interface for form data
+interface SellDeviceForm {
+  deviceType: string;
+  model: string;
+  condition: string;
+  pickupRequired: boolean;
+  address?: string;
+  description?: string;
+  image?: File;
+}
+
 const RefurbishedElectronics = () => {
   const [success, setSuccess] = useState(false);
   const [successSell, setSuccessSell] = useState(false);
@@ -29,7 +40,7 @@ const RefurbishedElectronics = () => {
 
   const [showCheckout, setShowCheckout] = useState(false);
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [imageFile, setImageFile] = useState(null)
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [checkoutData, setCheckoutData] = useState({
     name: '',
     email: '',
@@ -38,7 +49,8 @@ const RefurbishedElectronics = () => {
     paymentMethod: 'card',
   });
  
-  const [formData, setFormData] = useState({
+  // Update the form data state declaration
+  const [formData, setFormData] = useState<SellDeviceForm>({
     deviceType: '',
     model: '',
     condition: '',
@@ -117,21 +129,23 @@ const addToCart = (product: {
   sustainabilityImpact: string; 
 }) => {
   setCart((prevCart: Array<typeof product & { quantity: number }>) => {
-    // Check if the item already exists in the cart
-    const existingItemIndex = prevCart.findIndex(item => 
-      item.id === product.id && 
-      item.condition === product.condition
+    // Create a unique identifier combining product id and condition
+    const productKey = `${product.id}-${product.condition}`;
+    
+    // Check if this exact product (same id and condition) exists
+    const existingProduct = prevCart.find(item => 
+      `${item.id}-${item.condition}` === productKey
     );
 
-    if (existingItemIndex !== -1) {
-      // If item exists, increase quantity
-      return prevCart.map((item, index) => 
-        index === existingItemIndex 
-          ? { ...item, quantity: item.quantity + 1 } 
+    if (existingProduct) {
+      // If exact product exists, increment its quantity
+      return prevCart.map(item => 
+        `${item.id}-${item.condition}` === productKey
+          ? { ...item, quantity: item.quantity + 1 }
           : item
       );
     } else {
-      // If item doesn't exist, add new item with quantity 1
+      // If product doesn't exist, add as new item
       return [...prevCart, { ...product, quantity: 1 }];
     }
   });
@@ -157,7 +171,7 @@ const addToCart = (product: {
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-        setImageFile(imageFile);
+        setImageFile(file);
     }
 }
 
@@ -210,103 +224,37 @@ const addToCart = (product: {
 
 const handleSubmit = async (e: React.FormEvent) => {
   e.preventDefault();
-  
-  // Form validation
-  const validateForm = () => {
-    const errors: string[] = [];
-
-    if (!formData.deviceType) {
-      errors.push('Please select a device type');
-    }
-
-    if (!formData.model || formData.model.trim() === '') {
-      errors.push('Please enter the device model');
-    }
-
-    if (!formData.condition) {
-      errors.push('Please select the device condition');
-    }
-
-    if (formData.pickupRequired && (!formData.address || formData.address.trim() === '')) {
-      errors.push('Please provide a pickup address');
-    }
-
-    return errors;
-  };
-
-  // Perform validation
-  const validationErrors = validateForm();
-  
-  if (validationErrors.length > 0) {
-    setError(validationErrors.join(', '));
-    return;
-  }
-
-  // Reset previous states
-  setSuccess(false);
-  setError(null);
   setLoading(true);
-  console.log("Loading state set to true");
-
+  
   try {
-    // Collect form data
-    const formDataToSend = {
-      deviceType: formData.deviceType,
-      model: formData.model,
-      condition: formData.condition,
-      pickupRequired: formData.pickupRequired,
-      address: formData.pickupRequired ? formData.address : '',
-      description: formData.description || '',
-    };
-
-    // Create FormData for image upload
     const submitData = new FormData();
+    submitData.append('deviceType', formData.deviceType);
+    submitData.append('model', formData.model);
+    submitData.append('condition', formData.condition);
+    submitData.append('pickupRequired', String(formData.pickupRequired));
+    if (formData.address) submitData.append('address', formData.address);
+    if (formData.description) submitData.append('description', formData.description);
+    if (imageFile) submitData.append('image', imageFile);
     
-    // Append text data as JSON
-    submitData.append('data', JSON.stringify(formDataToSend));
-
-    // Append image if available
-    if (imageFile) {
-      submitData.append('image', imageFile);
-    }
-
-    // Call the API to handle the form submission
     const response = await fetch('/api/sell-device', {
       method: 'POST',
       body: submitData,
     });
 
-    if (response.ok) {
-      const result = await response.json();
-      setSuccess(true);
-      setError(null);
-      console.log("Request successful", result);
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Something went wrong');
+    }
 
-      // Optional: Reset form and close modal after successful submission
-      setTimeout(() => {
-        setShowSellForm(false);
-        // Optionally reset form data
-        // setFormData(initialFormState);
-      }, 2000);
-    } else {
-      // Handle API errors
-      const errorMessage = await response.text();
-      setError(errorMessage || 'Submission failed. Please try again.');
-      console.log("Request failed with error:", errorMessage);
-    }
-  } catch (error: unknown) {
-    // Handle network or unexpected errors
-    if (error instanceof Error) {
-      setError(error.message);
-      console.log("Caught error:", error.message);
-    } else {
-      setError('An unexpected error occurred');
-      console.log("Caught unexpected error");
-    }
+    setSuccess(true);
+    setError(null);
+    
+  } catch (error) {
+    console.error('Error:', error);
+    setError('Failed to submit form');
   } finally {
-    // Always set loading to false
     setLoading(false);
-    console.log("Loading state set to false");
   }
 };
   return (

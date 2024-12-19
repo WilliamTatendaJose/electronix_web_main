@@ -27,7 +27,7 @@ export default async function BlogPage() {
             TechRehub Blog
           </h1>
           <p className="text-lg text-gray-400">
-            Stay updated with the latest in Engineering and Technology
+            Stay updated with the latest in Engineering and Technology.
           </p>
         </div>
         
